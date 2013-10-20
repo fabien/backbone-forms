@@ -28,7 +28,6 @@ Form.Field = Backbone.View.extend({
     var schema = this.schema = this.createSchema(options.schema);
 
     //Override defaults
-    this.template = options.template || schema.template || this.constructor.template;
     if (this.form) {
       this.errorClassName = options.errorClassName || this.form.options.errorClassName || this.constructor.errorClassName;
     } else {
@@ -37,6 +36,17 @@ Form.Field = Backbone.View.extend({
 
     //Create editor
     this.editor = this.createEditor();
+    
+    //Set template
+    this.template = options.template || schema.template;
+    if (!this.template && _.isFunction(this.editor.fieldTemplate)) {
+      this.template = this.editor.fieldTemplate;
+    } else if (!this.template && _.isFunction(this.editor.constructor.fieldTemplate)) {
+      this.template = this.editor.constructor.fieldTemplate;
+    } else {
+      this.template = this.template || this.constructor.template;
+    }
+    
   },
 
   /**

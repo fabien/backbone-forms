@@ -245,7 +245,7 @@ define(['jquery', 'underscore', 'backbone', 'backbone-forms'], function($, _, Ba
       };
 
       return fieldError;
-    }
+    }    
   }, {
 
     //STATICS
@@ -305,8 +305,12 @@ define(['jquery', 'underscore', 'backbone', 'backbone-forms'], function($, _, Ba
         form: this.form
       }).render();
 
+      //Prepare template data
+      var data = _.extend({ key: this.key }, _.result(this, 'templateData'));
+      data.schema = this.schema;
+      
       //Create main element
-      var $el = $($.trim(this.template()));
+      var $el = $($.trim(this.template(data)));
 
       if (this.form && this.form.options.editorRender == 'replaceWith') {
         $el.find('[data-editor]').replaceWith(this.editor.el);
