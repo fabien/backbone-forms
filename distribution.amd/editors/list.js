@@ -275,6 +275,13 @@ define(['jquery', 'underscore', 'backbone', 'backbone-forms'], function($, _, Ba
         event.preventDefault();
         this.list.removeItem(this);
       },
+      'click [data-action]': function(event) {
+        var $el = $(event.currentTarget);
+        var action = $el.data('action');
+        if (action === 'add' || action === 'remove') return;
+        event.preventDefault();
+        this.list.trigger('action-' + action, this);
+      },
       'keydown input[type=text]': function(event) {
         if(event.keyCode !== 13) return;
         event.preventDefault();
